@@ -1,0 +1,4 @@
+<%- | String $options,
+| -%>
+
+OPTIONS="<%= $options %>"

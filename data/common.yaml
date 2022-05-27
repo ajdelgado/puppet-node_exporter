@@ -1,0 +1,12 @@
+---
+
+node_exporter::version: '1.3.1'
+node_exporter::flavor: 'linux-amd64'
+
+node_exporter::install::install_path: '/opt'
+node_exporter::install::package_name: 'node_exporter'
+node_exporter::install::repo_url_base: 'https://github.com/prometheus/node_exporter/releases/download/v'
+node_exporter::install::manage_user: true
+node_exporter::install::username: 'node_exporter'
+
+node_exporter::config::options: '--web.listen-address=:9100'
