@@ -24,12 +24,12 @@ class node_exporter (
     package_flavor  => $flavor,
   }
 
-  class { 'node_exporter::service':
-    node_exporter_version => $version,
-    node_exporter_flavor  => $flavor,
-  }
+  #class { 'node_exporter::service':
+  #  node_exporter_version => $version,
+  #  node_exporter_flavor  => $flavor,
+  #}
 
   Class[node_exporter::install]
   -> Class[node_exporter::config]
-  -> Class[node_exporter::service]
+  #-> Class[node_exporter::service]
 }

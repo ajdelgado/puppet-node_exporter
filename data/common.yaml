@@ -8,5 +8,7 @@ node_exporter::install::package_name: 'node_exporter'
 node_exporter::install::repo_url_base: 'https://github.com/prometheus/node_exporter/releases/download/v'
 node_exporter::install::manage_user: true
 node_exporter::install::username: 'node_exporter'
+node_exporter::install::package_checksum: '68f3802c2dd3980667e4ba65ea2e1fb03f4a4ba026cca375f15a0390ff850949'
+node_exporter::install::checksum_type: 'sha256'
 
 node_exporter::config::options: '--web.listen-address=:9100'

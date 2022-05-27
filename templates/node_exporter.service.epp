@@ -1,4 +1,5 @@
 <%- |
+  String $install_path,
   String $version,
   String $flavor,
   | -%>
@@ -9,7 +10,7 @@ Description=Node Exporter
 [Service]
 User=node_exporter
 EnvironmentFile=/etc/default/node_exporter
-ExecStart=/opt/node_exporter-<%= $version %>.<%= $flavor %>/node_exporter $OPTIONS
+ExecStart=<%= $install_path %>/node_exporter-<%= $version %>.<%= $flavor %>/node_exporter $OPTIONS
 
 [Install]
 WantedBy=multi-user.target

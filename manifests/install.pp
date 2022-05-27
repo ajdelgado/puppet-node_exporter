@@ -14,11 +14,23 @@
 # @param package_version
 #   version of the binary to download
 #
-# @param package_ensure
-#   full name of the final package
+# @param checksum
+#   archive file checksum (match checksum_type)
+#
+# @param checksum_type
+#   archive file checksum type (none|md5|sha1|sha2|sha256|sha384| sha512)
 #
 # @param repo_url_base
 #   base to build the final url
+#
+# @param manage_user
+#   should a especial user be created for node_exporter to run as
+#
+# @param username
+#   username to be created
+#
+# @param package_ensure
+#   full name of the final package
 #
 # @param repo_url
 #   URL prefix for the tarballed package
@@ -29,22 +41,18 @@
 # @param package_source
 #   source of the package to be downloaded
 #
-# @param manage_user
-#   should a especial user be created for node_exporter to run as
-#
-# @param username
-#   username to be created
-#
 # @example
 #   include node_exporter::install
 class node_exporter::install (
-  Stdlib::Absolutepath $install_path,# = '/opt',
-  String $package_name,#               = 'node_exporter',
-  String $package_flavor,#             = 'linux-amd64',
-  String $package_version,#            = '1.3.1'
+  Stdlib::Absolutepath $install_path,
+  String $package_name,
+  String $package_flavor,
+  String $package_version,
+  String $package_checksum,
+  String $checksum_type,
   String $repo_url_base,
-  Boolean $manage_user,#               = true,
-  String $username,#                   = 'node_exporter',
+  Boolean $manage_user,
+  String $username,
   String $package_ensure             = "${package_version}.${package_flavor}",
   String $repo_url                   = "${repo_url_base}${package_version}",
   String $archive_name               = "${package_name}-${package_ensure}.tar.gz",
@@ -53,12 +61,14 @@ class node_exporter::install (
   include 'archive'
 
   archive { $archive_name:
-    path         => "/tmp/${archive_name}",
-    source       => $package_source,
-    extract      => true,
-    extract_path => $install_path,
-    creates      => "${install_path}/${package_name}-${package_ensure}",
-    cleanup      => true,
+    path          => "/tmp/${archive_name}",
+    source        => $package_source,
+    extract       => true,
+    extract_path  => $install_path,
+    checksum      => $package_checksum,
+    checksum_type => $checksum_type,
+    creates       => "${install_path}/${package_name}-${package_ensure}",
+    cleanup       => true,
   }
 
   if $manage_user {
@@ -78,4 +88,11 @@ class node_exporter::install (
     group   => $username,
     require => Archive[$archive_name],
   }
+
+  class { 'node_exporter::service':
+    node_exporter_install_path => $install_path,
+    node_exporter_version      => $package_version,
+    node_exporter_flavor       => $package_flavor,
+  }
+
 }
