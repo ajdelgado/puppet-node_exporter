@@ -52,7 +52,7 @@ class node_exporter::install (
   String $checksum_type,
   String $repo_url_base,
   Boolean $manage_user,
-  String $username,
+  String $username = 'prometheus',
   String $package_ensure             = "${package_version}.${package_flavor}",
   String $repo_url                   = "${repo_url_base}${package_version}",
   String $archive_name               = "${package_name}-${package_ensure}.tar.gz",

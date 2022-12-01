@@ -8,8 +8,8 @@
 Description=Node Exporter
 
 [Service]
-User=node_exporter
-EnvironmentFile=/etc/default/node_exporter
+User=<%= $usermame %>
+EnvironmentFile=<%= $config_file %>
 ExecStart=<%= $install_path %>/node_exporter-<%= $version %>.<%= $flavor %>/node_exporter $ARGS
 
 [Install]

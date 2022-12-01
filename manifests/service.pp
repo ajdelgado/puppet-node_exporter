@@ -10,6 +10,7 @@
 #
 # @param node_exporter_install_path
 #   Path where the package will be extracted
+#
 # @param node_exporter_unit_name
 #   Name of the Systemd Service Unit
 #
