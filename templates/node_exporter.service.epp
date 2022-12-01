@@ -8,9 +8,14 @@
 Description=Node Exporter
 
 [Service]
-User=<%= $usermame %>
-EnvironmentFile=<%= $config_file %>
+User=<%= $node_exporter::install::usermame %>
+EnvironmentFile=<%= $node_exporter::config::config_file %>
+<% if $::facts['os']['name'] == 'Ubuntu' { -%>
+ExecStart=/usr/bin/prometheus-node-exporter $ARGS
+<% } -%>
+<% if $::facts['os']['name'] != 'Ubuntu' { -%>
 ExecStart=<%= $install_path %>/node_exporter-<%= $version %>.<%= $flavor %>/node_exporter $ARGS
+<% } -%>
 
 [Install]
 WantedBy=multi-user.target
