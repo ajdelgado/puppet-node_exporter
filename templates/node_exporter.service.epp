@@ -10,7 +10,7 @@ Description=Node Exporter
 [Service]
 User=node_exporter
 EnvironmentFile=/etc/default/node_exporter
-ExecStart=<%= $install_path %>/node_exporter-<%= $version %>.<%= $flavor %>/node_exporter $OPTIONS
+ExecStart=<%= $install_path %>/node_exporter-<%= $version %>.<%= $flavor %>/node_exporter $ARGS
 
 [Install]
 WantedBy=multi-user.target

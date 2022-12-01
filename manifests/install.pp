@@ -58,35 +58,39 @@ class node_exporter::install (
   String $archive_name               = "${package_name}-${package_ensure}.tar.gz",
   String $package_source             = "${repo_url}/${archive_name}",
 ){
-  include 'archive'
+  if ($::facts['os']['name'] == 'Ubuntu') {
+    include node_exporter::install_ubuntu
+  } else {
+    include 'archive'
 
-  archive { $archive_name:
-    path          => "/tmp/${archive_name}",
-    source        => $package_source,
-    extract       => true,
-    extract_path  => $install_path,
-    checksum      => $package_checksum,
-    checksum_type => $checksum_type,
-    creates       => "${install_path}/${package_name}-${package_ensure}",
-    cleanup       => true,
-  }
-
-  if $manage_user {
-    user { $username:
-      ensure     => present,
-      shell      => '/sbin/nologin',
-      home       => "${install_path}/${package_name}-${package_ensure}",
-      managehome => false,
-      require    => Archive[$archive_name],
+    archive { $archive_name:
+      path          => "/tmp/${archive_name}",
+      source        => $package_source,
+      extract       => true,
+      extract_path  => $install_path,
+      checksum      => $package_checksum,
+      checksum_type => $checksum_type,
+      creates       => "${install_path}/${package_name}-${package_ensure}",
+      cleanup       => true,
     }
-  }
 
-  file { "${install_path}/${package_name}-${package_ensure}":
-    ensure  => directory,
-    recurse => true,
-    owner   => $username,
-    group   => $username,
-    require => Archive[$archive_name],
+    if $manage_user {
+      user { $username:
+        ensure     => present,
+        shell      => '/sbin/nologin',
+        home       => "${install_path}/${package_name}-${package_ensure}",
+        managehome => false,
+        require    => Archive[$archive_name],
+      }
+    }
+
+    file { "${install_path}/${package_name}-${package_ensure}":
+      ensure  => directory,
+      recurse => true,
+      owner   => $username,
+      group   => $username,
+      require => Archive[$archive_name],
+    }
   }
 
   class { 'node_exporter::service':
@@ -94,5 +98,4 @@ class node_exporter::install (
     node_exporter_version      => $package_version,
     node_exporter_flavor       => $package_flavor,
   }
-
 }
