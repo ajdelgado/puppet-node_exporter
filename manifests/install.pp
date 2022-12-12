@@ -60,7 +60,7 @@ class node_exporter::install (
   String $repo_url                   = "${repo_url_base}${package_version}",
   String $archive_name               = "${package_name}-${package_ensure}.tar.gz",
   String $package_source             = "${repo_url}/${archive_name}",
-  Boolena $from_package              = False,
+  Boolena $from_package              = false,
 ){
   if ($from_package) {
     include node_exporter::install_ubuntu

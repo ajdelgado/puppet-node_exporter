@@ -19,7 +19,7 @@
 class node_exporter (
   String $version,
   String $flavor,
-  Boolean $from_package = False,
+  Boolean $from_package = false,
 ){
 
   include node_exporter::config
