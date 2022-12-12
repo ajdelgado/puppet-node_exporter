@@ -41,6 +41,9 @@
 # @param package_source
 #   source of the package to be downloaded
 #
+# @param from_package
+#   install from operating system package manager
+#
 # @example
 #   include node_exporter::install
 class node_exporter::install (
@@ -57,8 +60,9 @@ class node_exporter::install (
   String $repo_url                   = "${repo_url_base}${package_version}",
   String $archive_name               = "${package_name}-${package_ensure}.tar.gz",
   String $package_source             = "${repo_url}/${archive_name}",
+  Boolena $from_package              = False,
 ){
-  if ($::facts['os']['name'] == 'Ubuntu') {
+  if ($from_package) {
     include node_exporter::install_ubuntu
   } else {
     include 'archive'
@@ -91,11 +95,12 @@ class node_exporter::install (
       group   => $username,
       require => Archive[$archive_name],
     }
-  }
 
-  class { 'node_exporter::service':
-    node_exporter_install_path => $install_path,
-    node_exporter_version      => $package_version,
-    node_exporter_flavor       => $package_flavor,
+    class { 'node_exporter::service':
+      node_exporter_install_path => $install_path,
+      node_exporter_version      => $package_version,
+      node_exporter_flavor       => $package_flavor,
+    }
+
   }
 }

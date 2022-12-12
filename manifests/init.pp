@@ -8,6 +8,9 @@
 # @param flavor
 #   architecture of the destination server where the binary will be installed
 #
+# @param from_package
+#   install from operating system package manager
+#
 # @example defaults
 #   class { 'node_exporter':
 #     version => '1.3.1',
@@ -16,12 +19,14 @@
 class node_exporter (
   String $version,
   String $flavor,
+  Boolean $from_package = False,
 ){
 
   include node_exporter::config
   class { 'node_exporter::install':
     package_version => $version,
     package_flavor  => $flavor,
+    from_package    => $from_package,
   }
 
   #class { 'node_exporter::service':
