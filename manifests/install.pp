@@ -63,7 +63,7 @@ class node_exporter::install (
   Boolean $from_package              = false,
 ){
   if ($from_package) {
-    include node_exporter::install_ubuntu
+    include node_exporter::install_from_package
   } else {
     include 'archive'
 
