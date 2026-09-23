@@ -11,6 +11,9 @@
 # @param from_package
 #   install from operating system package manager
 #
+# @param manage_ufw
+#   handle UFW rules
+#
 # @example defaults
 #   class { 'node_exporter':
 #     version => '1.3.1',
@@ -20,6 +23,7 @@ class node_exporter (
   String $version,
   String $flavor,
   Boolean $from_package = false,
+  Boolean $manage_ufw = false,
 ){
 
   include node_exporter::config
@@ -37,4 +41,7 @@ class node_exporter (
   Class[node_exporter::install]
   -> Class[node_exporter::config]
   #-> Class[node_exporter::service]
+  if ($manage_ufw) {
+    include node_exporter::ufw
+  }
 }
