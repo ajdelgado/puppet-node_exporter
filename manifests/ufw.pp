@@ -12,10 +12,10 @@
 #   include node_exporter::ufw
 class node_exporter::ufw (
   String $collector_address,
-  String $dns_server = '8.8.8.8',
+  Variant[String[1], Array[String[1]]] $dns_servers = '8.8.8.8',
   Integer $port = 9100,
 ){
-  $collector_ip = dnsquery::a($collector_address, { nameserver => $dns_server })[0]
+  $collector_ip = dnsquery::a($collector_address, { nameserver => $dns_servers[0] })[0]
   ufw_rule { 'allow_node_exporter_collector':
     action       => 'allow',
     from_addr    => $collector_ip,
