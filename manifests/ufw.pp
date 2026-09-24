@@ -12,7 +12,7 @@
 #   include node_exporter::ufw
 class node_exporter::ufw (
   String $collector_address,
-  Variant[String[1], Array[String[1]]] $dns_servers = '8.8.8.8',
+  Variant[String[1], Array[String[1]]] $dns_servers = ['8.8.8.8'],
   Integer $port = 9100,
 ){
   $collector_ip = dnsquery::a($collector_address, { nameserver => $dns_servers[0] })[0]
